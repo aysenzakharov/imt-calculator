@@ -1,14 +1,14 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import AgeCalculator from './AgeCalculator';
+import DayCalculator from './DayCalculator';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Калькулятор лет</p>
-        <AgeCalculator/>
+        <p>Калькулятор дней между датами</p>
+        <DayCalculator/>
       </header>
     </div>
   );
