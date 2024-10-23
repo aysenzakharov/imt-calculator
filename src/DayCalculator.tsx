@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import 'moment/locale/ru';
 // import 'moment/locale/en-gb';
 import 'moment-precise-range-plugin';
+import { TextField } from '@mui/material';
 
 declare module 'moment' {
   function preciseDiff(start: string | Date | moment.Moment, end: string | Date | moment.Moment, convertToObject?: boolean): any;
 }
 
 const TimeDifferenceCalculator: React.FC = () => {
-  const [startDate, setStartDate] = useState<moment.Moment | null>(null);
+  const [startDate, setStartDate] = useState<moment.Moment | null>(moment(new Date(2024, 0, 1)));
+  const [startDatapickerIsOpened, setStartDatapickerIsOpened] = useState<boolean>(false)
   const [endDate, setEndDate] = useState<moment.Moment | null>(moment()); // Дата окончания по умолчанию - текущее время
-  const [timeDifference, setTimeDifference] = useState<string>('');
+  const [endDatapickerIsOpened, setEndDatapickerIsOpened] = useState<boolean>(false)
+  const [timeDifference, setTimeDifference] = useState<string>('')
 
   const handleStartDateChange = (date: moment.Moment | null) => {
     setStartDate(date);
@@ -47,6 +50,10 @@ const TimeDifferenceCalculator: React.FC = () => {
     return `${yearString}, ${monthString} и ${dayString}`;
   };
 
+  useEffect(() => {
+    calculateTimeDifference(startDate, endDate);
+  }, [])
+
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
@@ -54,7 +61,18 @@ const TimeDifferenceCalculator: React.FC = () => {
           label="Дата начала"
           value={startDate}
           onChange={handleStartDateChange}
+          open={startDatapickerIsOpened}
+          onClose={() => setStartDatapickerIsOpened(false)}
+          closeOnSelect
+          disableOpenPicker={false}
           slotProps={{
+            actionBar: {
+              hidden: true,
+              actions: []
+            },
+            toolbar: {
+              hidden: true,
+            },
             textField: {
               fullWidth: true,
               sx: {
@@ -73,14 +91,39 @@ const TimeDifferenceCalculator: React.FC = () => {
               },
             },
           }}
+          slots={{
+            textField: (params) => (
+              <TextField
+                {...params}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  setStartDatapickerIsOpened(true)
+                }} // Отключаем выделение текста
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: true, // Отключаем ввод с клавиатуры
+                }}
+              />
+            ),
+          }}
         />
         <br />
         <hr />
         <DatePicker
           label="Дата окончания"
           value={endDate}
-          onChange={handleEndDateChange}
+          onChange={handleEndDateChange}open={endDatapickerIsOpened}
+          onClose={() => setEndDatapickerIsOpened(false)}
+          closeOnSelect={true}
+          disableOpenPicker={false}
           slotProps={{
+            actionBar: {
+              hidden: true,
+              actions: []
+            },
+            toolbar: {
+              hidden: true,
+            },
             textField: {
               fullWidth: true,
               sx: {
@@ -98,6 +141,21 @@ const TimeDifferenceCalculator: React.FC = () => {
                 },
               },
             },
+          }}
+          slots={{
+            textField: (params) => (
+              <TextField
+                {...params}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  setEndDatapickerIsOpened(true)
+                }} // Отключаем выделение текста
+                InputProps={{
+                  ...params.InputProps,
+                  readOnly: true, // Отключаем ввод с клавиатуры
+                }}
+              />
+            ),
           }}
         />
         {timeDifference && (
