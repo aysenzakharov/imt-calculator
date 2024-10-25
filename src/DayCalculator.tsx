@@ -95,6 +95,10 @@ const TimeDifferenceCalculator: React.FC = () => {
             textField: (params) => (
               <TextField
                 {...params}
+                onTouchStart={(e) => {
+                  e.preventDefault()
+                  setStartDatapickerIsOpened(true)
+                }} // Отключаем выделение текста
                 onMouseDown={(e) => {
                   e.preventDefault()
                   setStartDatapickerIsOpened(true)
@@ -146,6 +150,10 @@ const TimeDifferenceCalculator: React.FC = () => {
             textField: (params) => (
               <TextField
                 {...params}
+                onTouchStart={(e) => {
+                  e.preventDefault()
+                  setEndDatapickerIsOpened(true)
+                }} // Отключаем выделение текста
                 onMouseDown={(e) => {
                   e.preventDefault()
                   setEndDatapickerIsOpened(true)
