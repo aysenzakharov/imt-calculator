@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import 'moment/locale/ru';
 // import 'moment/locale/en-gb';
 import 'moment-precise-range-plugin';
-import { TextField } from '@mui/material';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 declare module 'moment' {
   function preciseDiff(start: string | Date | moment.Moment, end: string | Date | moment.Moment, convertToObject?: boolean): any;
@@ -57,7 +58,7 @@ const TimeDifferenceCalculator: React.FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-        <DatePicker
+        <MobileDatePicker
           label="Дата начала"
           value={startDate}
           onChange={handleStartDateChange}
@@ -79,17 +80,27 @@ const TimeDifferenceCalculator: React.FC = () => {
                 input: { color: 'white' },
                 label: { color: 'white' },
               },
-            },
-            openPickerButton: {
-              sx: {
-                color: 'orange', // Яркий цвет иконки
-                '&:hover': {
-                  // color: 'red', // Цвет при наведении
-                  backgroundColor: 'rgba(255, 165, 0, 0.3)', // Яркий фон при наведении
-                  boxShadow: '0 0 10px rgba(255, 165, 0, 0.5)', // Добавление эффекта свечения
-                },
+              InputProps: {
+                readOnly: true, // Отключаем ввод с клавиатуры
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <EditIcon htmlColor='white' />
+                    </IconButton>
+                  </InputAdornment>
+                ),
               },
             },
+            // openPickerButton: {
+            //   sx: {
+            //     color: 'orange', // Яркий цвет иконки
+            //     '&:hover': {
+            //       // color: 'red', // Цвет при наведении
+            //       backgroundColor: 'rgba(255, 165, 0, 0.3)', // Яркий фон при наведении
+            //       boxShadow: '0 0 10px rgba(255, 165, 0, 0.5)', // Добавление эффекта свечения
+            //     },
+            //   },
+            // },
           }}
           slots={{
             textField: (params) => (
@@ -113,7 +124,7 @@ const TimeDifferenceCalculator: React.FC = () => {
         />
         <br />
         <hr />
-        <DatePicker
+        <MobileDatePicker
           label="Дата окончания"
           value={endDate}
           onChange={handleEndDateChange}open={endDatapickerIsOpened}
@@ -134,17 +145,27 @@ const TimeDifferenceCalculator: React.FC = () => {
                 input: { color: 'white' },
                 label: { color: 'white' },
               },
-            },
-            openPickerButton: {
-              sx: {
-                color: 'orange', // Яркий цвет иконки
-                '&:hover': {
-                  // color: 'red', // Цвет при наведении
-                  backgroundColor: 'rgba(255, 165, 0, 0.3)', // Яркий фон при наведении
-                  boxShadow: '0 0 10px rgba(255, 165, 0, 0.5)', // Добавление эффекта свечения
-                },
+              InputProps: {
+                readOnly: true, // Отключаем ввод с клавиатуры
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <EditIcon htmlColor='white' />
+                    </IconButton>
+                  </InputAdornment>
+                ),
               },
             },
+            // openPickerButton: {
+            //   sx: {
+            //     color: 'orange', // Яркий цвет иконки
+            //     '&:hover': {
+            //       // color: 'red', // Цвет при наведении
+            //       backgroundColor: 'rgba(255, 165, 0, 0.3)', // Яркий фон при наведении
+            //       boxShadow: '0 0 10px rgba(255, 165, 0, 0.5)', // Добавление эффекта свечения
+            //     },
+            //   },
+            // },
           }}
           slots={{
             textField: (params) => (
