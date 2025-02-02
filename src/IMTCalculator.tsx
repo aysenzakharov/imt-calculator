@@ -47,7 +47,7 @@ const IMTInputs: React.FC = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={4}>
+    <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
       <Box display="flex" alignItems="center">
         <HeightIcon />
         <Typography variant="h6" sx={{ color: '#ffffff', marginLeft: 1 }}>
@@ -82,7 +82,7 @@ const IMTInputs: React.FC = () => {
       
       {bmi !== null && (
         <Typography variant="h6" sx={{ color: '#ffffff' }}>
-          Ваш ИМТ: {bmi} ({interpretation})
+          Ваш ИМТ: {bmi}
         </Typography>
       )}
     </Box>
