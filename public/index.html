@@ -32,18 +32,6 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>ИМТ калькулятор</title>
-
-    <!-- Yandex Games SDK -->
-    <script src="/sdk.js"></script>
-    <script>
-        YaGames.init().then(ysdk => {
-          console.log('Yandex SDK initialized');
-          window.ysdk = ysdk;
-          // game ready api
-          window.ysdk.features.LoadingAPI?.ready()
-          window.ysdk.features.GameplayAPI?.start()
-        });
-    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
