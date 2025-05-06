@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Typography, Slider } from '@mui/material';
 import HeightIcon from '@mui/icons-material/Height';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -17,11 +17,7 @@ const IMTInputs: React.FC = () => {
     setWeight(newValue as number);
   };
 
-  useEffect(() => {
-    calculateBMI();
-  }, [height, weight]); // Recalculate BMI when height or weight changes
-
-  const calculateBMI = () => {
+  const calculateBMI = useCallback(() => {
     const heightInMeters = height / 100;
     const weightInKg = weight;
 
@@ -33,7 +29,11 @@ const IMTInputs: React.FC = () => {
       setBmi(null);
       setInterpretation('');
     }
-  };
+  }, [height, weight]);
+
+  useEffect(() => {
+    calculateBMI();
+  }, [height, weight, calculateBMI]); // Recalculate BMI when height or weight changes
 
   const getInterpretation = (bmiValue: number): string => {
     if (bmiValue < 16) return "Выраженный дефицит массы тела";
@@ -82,7 +82,7 @@ const IMTInputs: React.FC = () => {
       
       {bmi !== null && (
         <Typography variant="h6" sx={{ color: '#ffffff' }}>
-          Ваш ИМТ: {bmi}
+          Ваш ИМТ: {bmi} ({interpretation})
         </Typography>
       )}
     </Box>
