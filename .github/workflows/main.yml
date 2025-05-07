@@ -1,35 +1,38 @@
-name: Deploy CRA app to GitHub Pages with Yarn
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main  # замените на вашу основную ветку, если отличается
-
-permissions:
-  contents: write
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js 20.18.0
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20.18.0
           cache: 'yarn'
 
-      - name: Install dependencies with Yarn
+      - name: Install Yarn 1.22.22
+        run: npm install -g yarn@1.22.22
+
+      - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build project
         run: yarn build
+        env:
+          CI: false
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
