@@ -1,5 +1,10 @@
 name: Deploy to GitHub Pages
 
+permissions:
+  contents: write      # позволяет записывать файлы в репозиторий
+  pages: write         # даёт доступ к API GitHub Pages
+  id-token: write      # (необязательно) для OIDC, если вы используете его
+
 on:
   push:
     branches: [ "main" ]
