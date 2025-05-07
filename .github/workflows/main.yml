@@ -5,8 +5,6 @@ on:
     branches:
       - main
 
-# Без необходимости править настройки репы в UI: 
-# прописываем в workflow нужные permissions
 permissions:
   pages: write
   id-token: write
@@ -16,42 +14,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) Setup Node.js
       - name: Setup Node.js 20.18.0
         uses: actions/setup-node@v3
         with:
           node-version: 20.18.0
           cache: 'yarn'
 
-      # 3) Install Yarn
       - name: Install Yarn 1.22.22
         run: npm install -g yarn@1.22.22
 
-      # 4) Install dependencies
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # 5) Build project (react-scripts@5.0.1 из package.json)
-      - name: Build
+      - name: Build project
         run: |
           export NODE_ENV=production
           CI=false yarn build
 
-      # 6) Configure Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # 7) Upload build/ как Pages-артефакт
-      - name: Upload artifact for GitHub Pages
+      - name: Upload build/ as Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: build
 
-      # 8) Deploy Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
