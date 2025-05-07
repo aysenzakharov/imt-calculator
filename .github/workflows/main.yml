@@ -5,9 +5,8 @@ on:
     branches:
       - main
 
-# Даем права на запись в Pages и чтение репозитория
 permissions:
-  contents: read
+  contents: write     # <– даём токену право пушить в любую ветку
   pages: write
   id-token: write
 
@@ -16,40 +15,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Чекаутим код, не передавая по умолчанию креденшлы
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+        # убрали persist-credentials: false, чтобы GITHUB_TOKEN остался в remote‑URL
 
-      # 2. Ставит Node.js 20.18.0
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.18.0'
           cache: 'yarn'
 
-      # 3. Устанавливаем Yarn 1.22.22
       - name: Install Yarn
         run: npm install -g yarn@1.22.22
 
-      # 4. Устанавливаем зависимости
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # 5. Сборка Create React App
       - name: Build
         run: |
           export NODE_ENV=production
           CI=false yarn build
 
-      # 6. Деплойим на gh‑pages через peaceiris/actions-gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./build
-          # опционально можно задать коммиттера:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
